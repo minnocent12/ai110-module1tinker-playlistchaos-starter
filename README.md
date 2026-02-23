@@ -8,6 +8,29 @@ You do not need to understand everything at once. Approach the app as a curious 
 
 ---
 
+## How the Code Is Organized
+
+### `app.py`
+The Streamlit user interface. It handles:
+- Showing and updating the mood profile
+- Adding songs
+- Displaying playlists
+- Lucky Pick
+- Stats and history
+
+### `playlist_logic.py`
+The logic behind the app, including:
+- Normalizing and classifying songs
+- Building playlists
+- Merging playlist data
+- Searching
+- Computing statistics
+- Lucky Pick mechanics
+
+You will need to look at both files to understand how the app behaves.
+
+---
+
 ## How to Run the App
 
 ### 1. Create and Activate a Virtual Environment (Recommended)
@@ -45,28 +68,7 @@ Press `Ctrl + C` in the terminal.
 
 ---
 
-## How the Code Is Organized
 
-### `app.py`
-The Streamlit user interface. It handles:
-- Showing and updating the mood profile
-- Adding songs
-- Displaying playlists
-- Lucky Pick
-- Stats and history
-
-### `playlist_logic.py`
-The logic behind the app, including:
-- Normalizing and classifying songs
-- Building playlists
-- Merging playlist data
-- Searching
-- Computing statistics
-- Lucky Pick mechanics
-
-You will need to look at both files to understand how the app behaves.
-
----
 
 ## What You Will Do
 
