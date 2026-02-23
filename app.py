@@ -12,6 +12,9 @@ from playlist_logic import (
     search_songs,
 )
 
+# Constants
+GENRE_OPTIONS = ["rock", "lofi", "pop", "jazz", "electronic", "ambient", "other"]
+
 
 def init_state():
     """Initialize Streamlit session state."""
@@ -212,7 +215,7 @@ def profile_sidebar():
 
     profile["favorite_genre"] = st.sidebar.selectbox(
         "Favorite genre",
-        options=["rock", "lofi", "pop", "jazz", "electronic", "ambient", "other"],
+        options=GENRE_OPTIONS,
         index=0,
     )
 
@@ -232,7 +235,7 @@ def add_song_sidebar():
     artist = st.sidebar.text_input("Artist")
     genre = st.sidebar.selectbox(
         "Genre",
-        options=["rock", "lofi", "pop", "jazz", "electronic", "ambient", "other"],
+        options=GENRE_OPTIONS,
     )
     energy = st.sidebar.slider("Energy", min_value=1, max_value=10, value=5)
     tags_text = st.sidebar.text_input("Tags (comma separated)")
@@ -270,6 +273,17 @@ def playlist_tabs(playlists):
             render_playlist(label, playlists.get(label, []))
 
 
+def format_song_display(song: Song) -> str:
+    """Format a song for display in the playlist."""
+    mood = song.get("mood", "?")
+    tags = ", ".join(song.get("tags", []))
+    return (
+        f"- **{song['title']}** by {song['artist']} "
+        f"(genre {song['genre']}, energy {song['energy']}, mood {mood}) "
+        f"[{tags}]"
+    )
+
+
 def render_playlist(label, songs):
     st.subheader(f"{label} playlist")
     if not songs:
@@ -284,13 +298,7 @@ def render_playlist(label, songs):
         return
 
     for song in filtered:
-        mood = song.get("mood", "?")
-        tags = ", ".join(song.get("tags", []))
-        st.write(
-            f"- **{song['title']}** by {song['artist']} "
-            f"(genre {song['genre']}, energy {song['energy']}, mood {mood}) "
-            f"[{tags}]"
-        )
+        st.write(format_song_display(song))
 
 
 def lucky_section(playlists):
@@ -325,15 +333,24 @@ def stats_section(playlists):
 
     stats = compute_playlist_stats(playlists)
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Total songs", stats["total_songs"])
-    col2.metric("Hype songs", stats["hype_count"])
-    col3.metric("Chill songs", stats["chill_count"])
+    # Define metrics in groups
+    metric_groups = [
+        [
+            ("Total songs", stats["total_songs"]),
+            ("Hype songs", stats["hype_count"]),
+            ("Chill songs", stats["chill_count"]),
+        ],
+        [
+            ("Mixed songs", stats["mixed_count"]),
+            ("Hype ratio", f"{stats['hype_ratio']:.2f}"),
+            ("Average energy", f"{stats['avg_energy']:.2f}"),
+        ],
+    ]
 
-    col4, col5, col6 = st.columns(3)
-    col4.metric("Mixed songs", stats["mixed_count"])
-    col5.metric("Hype ratio", f"{stats['hype_ratio']:.2f}")
-    col6.metric("Average energy", f"{stats['avg_energy']:.2f}")
+    for group in metric_groups:
+        cols = st.columns(len(group))
+        for col, (label, value) in zip(cols, group):
+            col.metric(label, value)
 
     top_artist = stats["top_artist"]
     if top_artist:
