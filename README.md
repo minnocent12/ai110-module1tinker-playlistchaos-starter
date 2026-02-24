@@ -57,6 +57,9 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 
+```
+
+```bash
 Streamlit is a Python library that lets you turn regular Python scripts into interactive web apps — without needing HTML, CSS, or JavaScript.
 ```
 
@@ -138,3 +141,7 @@ If you finish early or want an extra challenge:
 - Stay curious. The unpredictability is intentional and part of the experience.
 
 When you finish, Playlist Chaos will feel more predictable — and you will have taken your first steps into AI-assisted debugging.
+
+## Reflection
+
+The main thing students needed to understand was how small logic mistakes in backend functions can affect major features like playlist classification and statistics. Students are most likely to struggle with tracing how one function impacts another, especially with edge cases. AI was helpful in identifying bugs like inverted search logic and improving readability, but sometimes misleading when it changed logic without checking requirements. This showed that clean-looking code is not always correct code. To guide a student without giving the answer, I would ask them to compare AI suggestions with the written specifications and explain where they match or differ.
